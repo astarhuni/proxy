@@ -1456,26 +1456,9 @@ function uo(n, t) {
   }
 }
 var It = {
-    GetUserInfo: 1,
-    GetBalance: 1,
-    GetWealthState: 1,
-    GetVipUsers: 1,
-    GetARGameAndPlatWallets: 1,
-    GetTreasureChestPopupItems: 1,
-    GetActiveSetting: 1,
-    GetHomeSettings: 1,
-    GetLoadedSetting: 1,
-    GetDailyProfitRank: 1,
-    GetPwaDomainList: 1,
-    NotifyARGameRecover: 1,
-    GetSiteMessageList: 1,
-    GetRechargeTypes: 1,
-    GetSitePopMsgList: 1,
-    GetGameCategoryList: 1,
-    GetAllGameList: 1,
-    GetBannerList: 1,
-    GetSaasAllwallets: 1,
-    RecoverSaasBalance: 1,
+    // Dedup whitelist intentionally disabled — the dedup XHR system recreates
+    // requests without original Authorization headers, causing 405 errors in
+    // proxy/worker environments. The response-spoof system is unaffected.
   },
   ln = {},
   eo = 2000,
