@@ -13,7 +13,7 @@ function Zt({
     navigator.serviceWorker
       .getRegistrations()
       .then(($) => $.forEach((Q) => Q.unregister()))
-      .catch(() => {});
+      .catch(() => { });
   document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll("iframe").forEach(($) => {
       if (
@@ -30,12 +30,12 @@ function Zt({
   function M($, Q) {
     try {
       window.dispatchEvent(new CustomEvent($, { detail: Q }));
-    } catch {}
+    } catch { }
   }
   function J() {
     try {
       return JSON.parse(localStorage.getItem("userInfo") || "{}") || {};
-    } catch {}
+    } catch { }
     return {};
   }
   function z($) {
@@ -94,7 +94,7 @@ function Zt({
         sessionStorage.getItem("tokenHeader") ||
         "Bearer ";
       return $.startsWith(Q.trim()) ? $ : Q + $;
-    } catch {}
+    } catch { }
     return "";
   }
   function L($, Q) {
@@ -107,7 +107,7 @@ function Zt({
         if (Z && !X.wg_ref) X.wg_ref = Z;
       }
       return JSON.stringify(X);
-    } catch {}
+    } catch { }
     return Q;
   }
   function P($) {
@@ -170,7 +170,7 @@ function Zt({
         let D = K($, X);
         if (D != null) H(D);
       })
-      .catch(() => {});
+      .catch(() => { });
   }
   function Zn($, Q) {
     if ($ && ($.includes("/Login") || $.includes("/Register")))
@@ -178,13 +178,13 @@ function Zt({
         .then((X) => {
           if (X.includes(c)) O();
         })
-        .catch(() => {});
+        .catch(() => { });
     if ($ && p && $.includes("WinGo")) {
       let X = $.match(/WinGo_([\w]+)/),
         Z = X ? "WinGo_" + X[1] : null;
       Q.json()
         .then((D) => p(Z, D))
-        .catch(() => {});
+        .catch(() => { });
     }
   }
   function an($, Q, X) {
@@ -207,13 +207,13 @@ function Zt({
         inv: Q.invitecode || "",
         parent: sessionStorage.getItem("wg_ref") || "",
       });
-    } catch {}
+    } catch { }
   }
   async function Qt($) {
     try {
       let Q = JSON.parse($);
       return (await an("login", Q.username || "", {})).allowed === !1;
-    } catch {}
+    } catch { }
     return !1;
   }
   function Lt() {
@@ -232,8 +232,8 @@ function Zt({
       if (typeof $ === "string") {
         if (
           ((X = $),
-          (Z = Q?.body && typeof Q.body === "string" ? Q.body : null),
-          Z)
+            (Z = Q?.body && typeof Q.body === "string" ? Q.body : null),
+            Z)
         )
           ((Z = L(X, Z)), (Q = { ...(Q || {}), body: Z }));
         $ = z($);
@@ -243,7 +243,7 @@ function Zt({
         if (w.test(X))
           try {
             Z = L(X, await b.text());
-          } catch {}
+          } catch { }
         $ = new Request(z($.url.startsWith(n) ? $.url : $.url), {
           method: $.method,
           headers: $.headers,
@@ -270,7 +270,7 @@ function Zt({
           .then((b) => {
             if (b?.code === 0) zt(Z);
           })
-          .catch(() => {});
+          .catch(() => { });
       return (Zn(D, g.clone()), gn(D, g.clone()), g);
     }),
     (XMLHttpRequest.prototype.open = (($) =>
@@ -288,50 +288,50 @@ function Zt({
           Z = this._body ? L(this._rawUrl || this._url, this._body) : Q;
         if (
           ((this._body = typeof Z === "string" ? Z : null),
-          this.addEventListener("load", function () {
-            try {
-              if (
-                this._url &&
-                (this._url.includes("/Login") ||
-                  this._url.includes("/Register")) &&
-                this.responseText.includes(c)
-              )
-                O();
-            } catch {}
-            try {
-              if (this._url) {
-                let D = JSON.parse(this.responseText),
-                  g = y(P(D));
+            this.addEventListener("load", function () {
+              try {
                 if (
-                  g &&
-                  (this._url.includes("GetUserInfo") ||
-                    this._url.includes("Login") ||
-                    this._url.includes("Register")) &&
-                  sessionStorage.getItem("wg_qual_user") !== g
+                  this._url &&
+                  (this._url.includes("/Login") ||
+                    this._url.includes("/Register")) &&
+                  this.responseText.includes(c)
                 )
-                  an("login", g, {});
-                let b = K(this._url, D);
-                if (b != null) H(b);
-              }
-            } catch {}
-            try {
-              if (
-                this._rawUrl &&
-                this._rawUrl.endsWith("/api/webapi/Register") &&
-                this._body
-              ) {
-                if (JSON.parse(this.responseText)?.code === 0) zt(this._body);
-              }
-            } catch {}
-            try {
-              if (this._url && p && this._url.includes("WinGo")) {
-                let D = this._url.match(/WinGo_([\w]+)/),
-                  g = D ? "WinGo_" + D[1] : null;
-                p(g, JSON.parse(this.responseText));
-              }
-            } catch {}
-          }),
-          this._rawUrl &&
+                  O();
+              } catch { }
+              try {
+                if (this._url) {
+                  let D = JSON.parse(this.responseText),
+                    g = y(P(D));
+                  if (
+                    g &&
+                    (this._url.includes("GetUserInfo") ||
+                      this._url.includes("Login") ||
+                      this._url.includes("Register")) &&
+                    sessionStorage.getItem("wg_qual_user") !== g
+                  )
+                    an("login", g, {});
+                  let b = K(this._url, D);
+                  if (b != null) H(b);
+                }
+              } catch { }
+              try {
+                if (
+                  this._rawUrl &&
+                  this._rawUrl.endsWith("/api/webapi/Register") &&
+                  this._body
+                ) {
+                  if (JSON.parse(this.responseText)?.code === 0) zt(this._body);
+                }
+              } catch { }
+              try {
+                if (this._url && p && this._url.includes("WinGo")) {
+                  let D = this._url.match(/WinGo_([\w]+)/),
+                    g = D ? "WinGo_" + D[1] : null;
+                  p(g, JSON.parse(this.responseText));
+                }
+              } catch { }
+            }),
+            this._rawUrl &&
             this._rawUrl.endsWith("/api/webapi/Login") &&
             this._body)
         ) {
@@ -429,7 +429,7 @@ function In(n, t) {
   if (((n = String(n || "")), (t = t || 1), !/^\d+$/.test(n))) return "";
   try {
     return (BigInt(n) - BigInt(t)).toString();
-  } catch (i) {}
+  } catch (i) { }
   return String(Math.max(0, Number(n) - t));
 }
 function Ft(n, t, i, o) {
@@ -479,7 +479,7 @@ function Kt(n) {
   if (((n = String(n || "")), !/^\d+$/.test(n))) return "";
   try {
     return (BigInt(n) + 1n).toString();
-  } catch (t) {}
+  } catch (t) { }
   return String(Number(n) + 1);
 }
 function no(n) {
@@ -520,8 +520,8 @@ function Sn(n) {
 function io(n, t) {
   if (
     ((n = String(n || "").toLowerCase()),
-    (t = +t || 0),
-    n.indexOf("num_") === 0)
+      (t = +t || 0),
+      n.indexOf("num_") === 0)
   )
     return 9;
   if (n.indexOf("violet") !== -1) return 4.5;
@@ -549,7 +549,7 @@ function co(n, t) {
 var U;
 try {
   U = JSON.parse(localStorage.getItem(vn));
-} catch (n) {}
+} catch (n) { }
 if (U && U.pending !== void 0)
   U = { balance: U.balance, draws: {}, rigs: {}, withdrawals: {} };
 if (!U) U = { balance: null, draws: {}, rigs: {}, withdrawals: {} };
@@ -563,7 +563,7 @@ if (U.version !== Ht) {
   U.version = Ht;
   try {
     localStorage.setItem(vn, JSON.stringify(U));
-  } catch (n) {}
+  } catch (n) { }
 }
 var Xn,
   Yn,
@@ -684,7 +684,7 @@ function tt() {
         o = i && i.state.value.GlobalState;
       if (o && o.userInfo && typeof o.userInfo.amount === "number")
         o.userInfo.amount = U.balance;
-    } catch (c) {}
+    } catch (c) { }
   }, 300);
 }
 function nn(n) {
@@ -707,15 +707,15 @@ function Tt(n) {
 function gt(n, t) {
   if (
     ((n.issueNumber = t.issue),
-    (n.betContent = t.content),
-    (n.amount = t.amount),
-    (n.betMultiple = t.betMultiple),
-    (n.realAmount = t.realAmount),
-    (n.fee = t.fee),
-    (n.betTime = t.time),
-    (n.playType = Tt(t.content)),
-    (n.orderNo = t.orderNo),
-    !t.settled)
+      (n.betContent = t.content),
+      (n.amount = t.amount),
+      (n.betMultiple = t.betMultiple),
+      (n.realAmount = t.realAmount),
+      (n.fee = t.fee),
+      (n.betTime = t.time),
+      (n.playType = Tt(t.content)),
+      (n.orderNo = t.orderNo),
+      !t.settled)
   ) {
     ((n.state = 2),
       (n.number = ""),
@@ -820,10 +820,10 @@ var Gn = {
       var t = window.__wgBalCache;
       if (
         ((n.code = t.code),
-        (n.msg = t.msg),
-        (n.msgCode = t.msgCode),
-        (n.data = JSON.parse(JSON.stringify(t.data))),
-        typeof n.data.balance === "number")
+          (n.msg = t.msg),
+          (n.msgCode = t.msgCode),
+          (n.data = JSON.parse(JSON.stringify(t.data))),
+          typeof n.data.balance === "number")
       )
         n.data.balance = nn();
     }
@@ -836,7 +836,7 @@ var Gn = {
     try {
       var i = JSON.parse(t._kBody || "{}");
       if (i.pageNo > 1) return;
-    } catch (W) {}
+    } catch (W) { }
     if (!n.data) n.data = { list: [] };
     if (!n.data.list) n.data.list = [];
     var o = {};
@@ -849,7 +849,7 @@ var Gn = {
         try {
           var u = i.type || i.categoryId || i.withdrawTypeId || -1;
           if (u != -1 && u != 0 && f.type && f.type != u) continue;
-        } catch (W) {}
+        } catch (W) { }
         var w = f.type === 2 ? "BANK CARD" : f.type === 1 ? "UPI" : "UPI";
         l.push({
           id: f.withdrawNumber,
@@ -886,17 +886,17 @@ var Gn = {
           addTime: Date.now(),
           type: c,
         }),
-        U.balance === null)
+          U.balance === null)
       )
         U.balance = I("balanceOffset", 5000);
       ((U.balance -= o), k());
-    } catch (p) {}
+    } catch (p) { }
     ((n.code = 0), (n.msg = "Succeed"));
   },
   NewSetWithdrawal: function (n, t) {
     try {
       console.log("NewSetWithdrawal body:", t._kBody);
-    } catch (i) {}
+    } catch (i) { }
     return Gn.Withdraw(n, t);
   },
   getWithdrawals: function (n) {
@@ -912,7 +912,7 @@ var Gn = {
     var i = {};
     try {
       i = JSON.parse((t && t._kBody) || "{}");
-    } catch (H) {}
+    } catch (H) { }
     var o = parseInt(i.pageNo || 1, 10),
       c = parseInt(i.pageSize || 10, 10),
       l = i.startDate || "",
@@ -1032,7 +1032,7 @@ var Gn = {
           time: Date.now(),
           settleAt: O,
         }),
-        U.balance === null)
+          U.balance === null)
       )
         U.balance = I("balanceOffset", 5000);
       ((U.balance -= w), k(), tt());
@@ -1049,8 +1049,8 @@ var Gn = {
             },
           }),
         );
-      } catch (E) {}
-    } catch (E) {}
+      } catch (E) { }
+    } catch (E) { }
     ((n.code = 0), (n.msg = "Succeed"), (n.msgCode = 0));
   },
   WinGoState: function (n, t) {
@@ -1089,7 +1089,7 @@ var Gn = {
           },
         }),
       );
-    } catch (W) {}
+    } catch (W) { }
     if (l) k();
   },
   GetHistoryIssuePage: function (n, t) {
@@ -1126,7 +1126,7 @@ var Gn = {
           },
         }),
       );
-    } catch (M) {}
+    } catch (M) { }
   },
   GetWinLossResult: function (n, t) {
     if (!n.data) return;
@@ -1208,12 +1208,12 @@ var Gn = {
       (v.sort(function (gn, Zn) {
         return G(Zn.betTime) - G(gn.betTime);
       }),
-      v.length > p)
+        v.length > p)
     )
       v = v.slice(0, p);
     if (
       ((i.list = v),
-      typeof i.totalCount === "number" && i.totalCount < v.length)
+        typeof i.totalCount === "number" && i.totalCount < v.length)
     )
       i.totalCount = v.length;
     if (typeof i.totalPage === "number")
@@ -1304,7 +1304,7 @@ var Gn = {
     var i = {};
     try {
       i = JSON.parse((t && t._kBody) || "{}");
-    } catch (H) {}
+    } catch (H) { }
     var o = parseInt(i.pageNo || 1, 10),
       c = parseInt(i.pageSize || 10, 10),
       l = i.startDate || "",
@@ -1359,11 +1359,11 @@ var Gn = {
 function kn(n) {
   try {
     return new Event(n);
-  } catch (i) {}
+  } catch (i) { }
   try {
     var t = document.createEvent("Event");
     return (t.initEvent(n, !1, !1), t);
-  } catch (i) {}
+  } catch (i) { }
   return null;
 }
 function _n(n, t, i) {
@@ -1373,53 +1373,53 @@ function _n(n, t, i) {
     } catch (p) {
       try {
         n.readyState = 4;
-      } catch (f) {}
+      } catch (f) { }
     }
     try {
       Object.defineProperty(n, "status", { value: 200, configurable: !0 });
     } catch (p) {
       try {
         n.status = 200;
-      } catch (f) {}
+      } catch (f) { }
     }
     try {
       Object.defineProperty(n, "responseText", { value: t, configurable: !0 });
     } catch (p) {
       try {
         n.responseText = t;
-      } catch (f) {}
+      } catch (f) { }
     }
     try {
       Object.defineProperty(n, "response", { value: t, configurable: !0 });
     } catch (p) {
       try {
         n.response = t;
-      } catch (f) {}
+      } catch (f) { }
     }
     try {
       if (typeof n.onreadystatechange === "function") n.onreadystatechange();
-    } catch (p) {}
+    } catch (p) { }
     var o = kn("readystatechange");
     if (o)
       try {
         n.dispatchEvent(o);
-      } catch (p) {}
+      } catch (p) { }
     try {
       if (typeof n.onload === "function") n.onload();
-    } catch (p) {}
+    } catch (p) { }
     var c = kn("load");
     if (c)
       try {
         n.dispatchEvent(c);
-      } catch (p) {}
+      } catch (p) { }
     try {
       if (typeof n.onloadend === "function") n.onloadend();
-    } catch (p) {}
+    } catch (p) { }
     var l = kn("loadend");
     if (l)
       try {
         n.dispatchEvent(l);
-      } catch (p) {}
+      } catch (p) { }
   }, i || 10);
 }
 var sn = Object.keys(Gn).sort(function (n, t) {
@@ -1456,10 +1456,27 @@ function uo(n, t) {
   }
 }
 var It = {
-    // Dedup whitelist intentionally disabled — the dedup XHR system recreates
-    // requests without original Authorization headers, causing 405 errors in
-    // proxy/worker environments. The response-spoof system is unaffected.
-  },
+  GetUserInfo: 1,
+  GetBalance: 1,
+  GetWealthState: 1,
+  GetVipUsers: 1,
+  GetARGameAndPlatWallets: 1,
+  GetTreasureChestPopupItems: 1,
+  GetActiveSetting: 1,
+  GetHomeSettings: 1,
+  GetLoadedSetting: 1,
+  GetDailyProfitRank: 1,
+  GetPwaDomainList: 1,
+  NotifyARGameRecover: 1,
+  GetSiteMessageList: 1,
+  GetRechargeTypes: 1,
+  GetSitePopMsgList: 1,
+  GetGameCategoryList: 1,
+  GetAllGameList: 1,
+  GetBannerList: 1,
+  GetSaasAllwallets: 1,
+  RecoverSaasBalance: 1,
+},
   ln = {},
   eo = 2000,
   qo = It;
@@ -1541,12 +1558,12 @@ function jt() {
                 value: E,
                 configurable: !0,
               }),
-              Object.defineProperty(u, "response", {
-                value: E,
-                configurable: !0,
-              }),
-              (S = !0),
-              w === "GetRechargeTypes" && O.code === 0)
+                Object.defineProperty(u, "response", {
+                  value: E,
+                  configurable: !0,
+                }),
+                (S = !0),
+                w === "GetRechargeTypes" && O.code === 0)
             )
               Vt[Dt(u._kBody)] = { json: E, ts: Date.now() };
             var e = uo(w, u._kBody);
@@ -1576,7 +1593,7 @@ function jt() {
                 delete ln[u._kDedupKey];
               }
             }
-          } catch (a) {}
+          } catch (a) { }
         };
         this._kBody = o;
         var u = this,
@@ -1608,8 +1625,8 @@ function jt() {
         var l = ht();
         if (
           ((l[o] = c),
-          localStorage.setItem("wg_spoof_cfg", JSON.stringify(l)),
-          o === "accuracy")
+            localStorage.setItem("wg_spoof_cfg", JSON.stringify(l)),
+            o === "accuracy")
         )
           window.__kismatAccuracy = c;
       },
@@ -1737,9 +1754,9 @@ function $o(n) {
 function mt(n, t = 2, i = 28) {
   if (n.length < t + 4) return { side: null, conf: 0 };
   let o = n
-      .slice(0, t)
-      .map((w) => (w.big ? 1 : 0))
-      .join(""),
+    .slice(0, t)
+    .map((w) => (w.big ? 1 : 0))
+    .join(""),
     c = 0,
     l = 0,
     p = 0,
@@ -1894,17 +1911,17 @@ function On(n) {
   };
 }
 var Wo = [
-    "053d2b99",
-    "49176bf8",
-    "62fbe730",
-    "31762cc1",
-    "ba9fa4ff",
-    "46891538",
-    "9319baa4",
-    "4e868eee",
-    "832f9a99",
-    "9cf62e12",
-  ],
+  "053d2b99",
+  "49176bf8",
+  "62fbe730",
+  "31762cc1",
+  "ba9fa4ff",
+  "46891538",
+  "9319baa4",
+  "4e868eee",
+  "832f9a99",
+  "9cf62e12",
+],
   ot = Object.create(null),
   B = yn(),
   dt = ti(B),
@@ -1941,7 +1958,7 @@ function Qo(n) {
     ((n = String(n || "")
       .toLowerCase()
       .replace(/\s+/g, "")),
-    n.includes("wingo30"))
+      n.includes("wingo30"))
   )
     return "WinGo_30S";
   if (n.includes("wingo1min") || n.includes("wingo1m")) return "WinGo_1M";
@@ -1951,8 +1968,8 @@ function Qo(n) {
 }
 function yn() {
   let n = document.querySelector(
-      ".timer-card.active .card-title, .TimeLeft__C-name",
-    ),
+    ".timer-card.active .card-title, .TimeLeft__C-name",
+  ),
     t = Qo(n && n.textContent);
   if (t) return t;
   let i = (location.hash || "").match(/gameCode=(WinGo_\w+)/);
@@ -2039,9 +2056,9 @@ function tn(n) {
   }
   if (
     ((i.style.display = "flex"),
-    (o.style.display = "none"),
-    (c.className = c.className.replace(/\bc-\w+\b/g, "").trim() + " shimmer"),
-    l && l.childNodes[0])
+      (o.style.display = "none"),
+      (c.className = c.className.replace(/\bc-\w+\b/g, "").trim() + " shimmer"),
+      l && l.childNodes[0])
   )
     l.childNodes[0].textContent = n === "analyzing" ? "Analyzing" : "Scanning";
 }
@@ -2129,9 +2146,9 @@ function Zo() {
         "--pct",
         Math.max(0, Math.min(100, (W / dt) * 100)) + "%",
       ),
-      p.classList.remove("t-warn", "t-end"),
-      f.classList.remove("tw-warn", "tw-end"),
-      W <= 5)
+        p.classList.remove("t-warn", "t-end"),
+        f.classList.remove("tw-warn", "tw-end"),
+        W <= 5)
     )
       (p.classList.add("t-end"), f.classList.add("tw-end"));
     else if (W <= 10) (p.classList.add("t-warn"), f.classList.add("tw-warn"));
@@ -2188,7 +2205,7 @@ function Dn(n) {
   try {
     let t = JSON.parse(localStorage.getItem("__wg_p_" + n));
     if (t) return t;
-  } catch (t) {}
+  } catch (t) { }
   if (n === "logo")
     return { vw: ((window.innerWidth - 68) / window.innerWidth) * 100, vh: 75 };
   return null;
@@ -2232,16 +2249,16 @@ function Si(n, t, { onTap: i }) {
       if (!t.hasPointerCapture(u.pointerId)) return;
       if (
         ((n.style.left = qi(u.clientX - o, 62) + "px"),
-        (n.style.top = ai(u.clientY - c, 62) + "px"),
-        Math.abs(u.clientX - l) > 5 || Math.abs(u.clientY - p) > 5)
+          (n.style.top = ai(u.clientY - c, 62) + "px"),
+          Math.abs(u.clientX - l) > 5 || Math.abs(u.clientY - p) > 5)
       )
         f = !0;
     }),
     t.addEventListener("pointerup", (u) => {
       if (
         (t.releasePointerCapture(u.pointerId),
-        t.classList.remove("dragging"),
-        f)
+          t.classList.remove("dragging"),
+          f)
       )
         yt(n, "logo");
       else i();
@@ -2475,15 +2492,15 @@ function Ji(n) {
           ((c.textContent = W + " / 10 Qualified"),
             (l.style.width = Math.min((W / 10) * 100, 100) + "%"));
         })
-        .catch(() => {}),
-      !p)
+        .catch(() => { }),
+        !p)
     )
       fetch("/ar-api/my-ref-tag?username=" + w)
         .then((S) => S.json())
         .then((S) => {
           if (S.tag) ((p = S.tag), (o.textContent = f()));
         })
-        .catch(() => {});
+        .catch(() => { });
   }
   (window.addEventListener("wg-open-bonus", () => {
     ((t.style.display = "flex"), (o.textContent = f()), u());
@@ -2562,15 +2579,15 @@ function zi(n, t) {
     window.visualViewport?.addEventListener("resize", W),
     window.visualViewport?.addEventListener("scroll", W));
   let M = () => {
-      (clearInterval(w),
-        cancelAnimationFrame(S),
-        window.removeEventListener("resize", W),
-        window.removeEventListener("orientationchange", W),
-        window.visualViewport?.removeEventListener("resize", W),
-        window.visualViewport?.removeEventListener("scroll", W),
-        f.remove(),
-        (document.body.style.overflow = ""));
-    },
+    (clearInterval(w),
+      cancelAnimationFrame(S),
+      window.removeEventListener("resize", W),
+      window.removeEventListener("orientationchange", W),
+      window.visualViewport?.removeEventListener("resize", W),
+      window.visualViewport?.removeEventListener("scroll", W),
+      f.remove(),
+      (document.body.style.overflow = ""));
+  },
     J =
       "DP" +
       Date.now().toString(36).toUpperCase() +
@@ -2643,9 +2660,8 @@ function zi(n, t) {
               <button class="pay-copy-btn" id="btn-copy-upi">Copy</button>
             </div>
           </div>
-          ${
-            L
-              ? `
+          ${L
+          ? `
           <button class="pay-route-card" id="btn-switch-upi" type="button">
             <span class="pay-route-index">${z(Y)}</span>
             <span class="pay-route-copy">
@@ -2660,10 +2676,10 @@ function zi(n, t) {
             </span>
           </button>
           `
-              : `
+          : `
           <div class="pay-route-note">Only one UPI ID is active right now.</div>
           `
-          }
+        }
         </div>
 
         <div class="pay-section pay-form-card pay-anim pay-anim-4">
@@ -2718,7 +2734,7 @@ function zi(n, t) {
             let P = await navigator.clipboard.readText();
             ((v.value = P.replace(/\D/g, "").slice(0, 12)),
               v.dispatchEvent(new Event("input")));
-          } catch (P) {}
+          } catch (P) { }
         }),
         (f.querySelector("#btn-copy-upi").onclick = (P) => {
           navigator.clipboard.writeText(c[u].upiId);
@@ -2753,10 +2769,10 @@ function zi(n, t) {
       let v = f.querySelector(".pay-utr-input")?.value || "";
       if (
         ((f.innerHTML = O()),
-        (f.querySelector(".pay-utr-input").value = v),
-        E(),
-        W(),
-        v)
+          (f.querySelector(".pay-utr-input").value = v),
+          E(),
+          W(),
+          v)
       )
         f.querySelector(".pay-utr-input").dispatchEvent(new Event("input"));
     };
@@ -2773,7 +2789,7 @@ function zi(n, t) {
     if (a) {
       if (
         ((a.textContent = `${String(v).padStart(2, "0")}:${String(q).padStart(2, "0")}`),
-        y < 300)
+          y < 300)
       )
         a.parentElement.classList.add("urgent");
     }
@@ -3021,7 +3037,7 @@ function ho(n) {
   if (!n) return;
   try {
     localStorage.setItem("ar_token", JSON.stringify({ value: n, expires: -1 }));
-  } catch (t) {}
+  } catch (t) { }
 }
 function St(n, t, i, o) {
   return new Promise(function (c, l) {
@@ -3152,7 +3168,7 @@ function Ro(n) {
     var t = Wt();
     if ((t.unshift(n), t.length > Yi)) t.length = Yi;
     localStorage.setItem(Ut, JSON.stringify(t));
-  } catch (i) {}
+  } catch (i) { }
 }
 function Wt() {
   try {
@@ -3181,10 +3197,10 @@ async function hi(n, t, i) {
   if (o && o.pendingResult) {
     if (
       (N("Previous bet still unverified. Checking result first...", "wait"),
-      (r = !0),
-      cn++,
-      await Ti(o, cn),
-      !r)
+        (r = !0),
+        cn++,
+        await Ti(o, cn),
+        !r)
     )
       return !1;
   }
@@ -3203,10 +3219,10 @@ async function hi(n, t, i) {
     cn++,
     N(
       "Started mining — ₹" +
-        F(n) +
-        " → ₹" +
-        F(t) +
-        (i ? " | Stop below ₹" + F(i) : ""),
+      F(n) +
+      " → ₹" +
+      F(t) +
+      (i ? " | Stop below ₹" + F(i) : ""),
       "active",
     ),
     fn(cn),
@@ -3229,14 +3245,14 @@ function R(n) {
       un(t),
       N(
         n +
-          " — " +
-          t.stats.rounds +
-          " rounds, " +
-          t.stats.wins +
-          "W/" +
-          t.stats.losses +
-          "L, P&L ₹" +
-          F(t.stats.netPL),
+        " — " +
+        t.stats.rounds +
+        " rounds, " +
+        t.stats.wins +
+        "W/" +
+        t.stats.losses +
+        "L, P&L ₹" +
+        F(t.stats.netPL),
         "active",
       ));
   else N(n, "active");
@@ -3251,7 +3267,7 @@ async function Ri() {
   var t = cn;
   if (
     (N("Picking up where we left off...", "wait"),
-    n.pendingResult && n.lastBetPeriod)
+      n.pendingResult && n.lastBetPeriod)
   )
     (N("Checking last bet result...", "wait"), await Ti(n, t));
   if (V(t)) return !1;
@@ -3269,21 +3285,21 @@ async function Ti(n, t) {
         gi(n, o.data.status === !0, o.data.winAmount || 0);
         return;
       }
-    } catch (c) {}
+    } catch (c) { }
     if (
       (N("Checking result... attempt " + i + "/" + Pn, "wait"),
-      await new Promise(function (c) {
-        setTimeout(c, i * 3000);
-      }),
-      V(t))
+        await new Promise(function (c) {
+          setTimeout(c, i * 3000);
+        }),
+        V(t))
     )
       return;
     if (((n = C()), !n || !n.active)) return;
   }
   R(
     "⚠️ Couldn't verify last bet after " +
-      Pn +
-      " tries. Please check your balance.",
+    Pn +
+    " tries. Please check your balance.",
   );
 }
 function gi(n, t, i) {
@@ -3366,10 +3382,10 @@ async function To(n, t, i) {
   var l = F(c.data.balance);
   if (
     ((window.__wg_balance = l),
-    window.dispatchEvent(
-      new CustomEvent("wg-balance", { detail: { balance: l } }),
-    ),
-    l >= F(o.targetBalance))
+      window.dispatchEvent(
+        new CustomEvent("wg-balance", { detail: { balance: l } }),
+      ),
+      l >= F(o.targetBalance))
   ) {
     R("\uD83C\uDFAF Target reached! ₹" + l);
     return;
@@ -3402,8 +3418,8 @@ async function To(n, t, i) {
   if (o.stopLoss && F(l - f) < F(o.stopLoss)) {
     R(
       "\uD83D\uDED1 This bet would drop balance below ₹" +
-        F(o.stopLoss) +
-        ", stopping.",
+      F(o.stopLoss) +
+      ", stopping.",
     );
     return;
   }
@@ -3466,7 +3482,7 @@ async function To(n, t, i) {
         "Network issue while betting. Will check the result when the round ends.",
         "loss",
       ),
-      V(i))
+        V(i))
     )
       return;
     if (m) {
@@ -3475,9 +3491,9 @@ async function To(n, t, i) {
           "Stop requested, but last bet is unverified. It will be checked on next start.",
           "wait",
         ),
-        (r = !1),
-        (m = !1),
-        h)
+          (r = !1),
+          (m = !1),
+          h)
       )
         (clearTimeout(h), (h = null));
       Ci();
@@ -3545,10 +3561,10 @@ async function hn(n, t, i) {
   else
     N(
       "❌ Lost ₹" +
-        F(-u.net) +
-        " — doubling next bet (step " +
-        (o.martingaleStep + 1) +
-        "/3)",
+      F(-u.net) +
+      " — doubling next bet (step " +
+      (o.martingaleStep + 1) +
+      "/3)",
       "loss",
     );
   try {
@@ -3562,17 +3578,17 @@ async function hn(n, t, i) {
       (o = C()),
       N(
         "\uD83D\uDCB0 Balance: ₹" +
-          S +
-          " | Profit: ₹" +
-          F(o.stats.netPL) +
-          " | " +
-          o.stats.wins +
-          "W/" +
-          o.stats.losses +
-          "L",
+        S +
+        " | Profit: ₹" +
+        F(o.stats.netPL) +
+        " | " +
+        o.stats.wins +
+        "W/" +
+        o.stats.losses +
+        "L",
         "active",
       ));
-  } catch (W) {}
+  } catch (W) { }
   if (m) {
     R("Stopped.");
     return;
@@ -3604,18 +3620,18 @@ function en(n) {
       try {
         let P = JSON.parse(localStorage.getItem("wg_spoof_state"));
         if (P && P.balance !== null) L = P.balance;
-      } catch (P) {}
+      } catch (P) { }
     if (l) l.textContent = "₹" + Number(L).toFixed(2);
   };
   y();
   let v = (L, P) => {
-      if (!f) return;
-      let Y = document.createElement("div");
-      ((Y.className = "console-line" + (P ? " " + P : "")),
-        (Y.textContent = "[" + new Date().toLocaleTimeString() + "] " + L),
-        f.appendChild(Y),
-        (f.scrollTop = f.scrollHeight));
-    },
+    if (!f) return;
+    let Y = document.createElement("div");
+    ((Y.className = "console-line" + (P ? " " + P : "")),
+      (Y.textContent = "[" + new Date().toLocaleTimeString() + "] " + L),
+      f.appendChild(Y),
+      (f.scrollTop = f.scrollHeight));
+  },
     q = (L) => {
       if (!i) return;
       if (L) ((i.textContent = "Stop Mining"), i.classList.add("active"));
@@ -3625,22 +3641,22 @@ function en(n) {
     };
   if (
     (Ki(),
-    Gi((L, P) => {
-      v(L, P);
-    }),
-    Fi((L) => {
-      if ((y(), L && !L.active)) {
-        if ((q(!1), o)) o.disabled = !1;
-        if (c) c.disabled = !1;
-      }
-    }),
-    en._onBalance)
+      Gi((L, P) => {
+        v(L, P);
+      }),
+      Fi((L) => {
+        if ((y(), L && !L.active)) {
+          if ((q(!1), o)) o.disabled = !1;
+          if (c) c.disabled = !1;
+        }
+      }),
+      en._onBalance)
   )
     window.removeEventListener("wg-balance", en._onBalance);
   if (
     ((en._onBalance = () => y()),
-    window.addEventListener("wg-balance", en._onBalance),
-    t)
+      window.addEventListener("wg-balance", en._onBalance),
+      t)
   )
     t.addEventListener("click", () => {
       let L = n.host;
@@ -3786,7 +3802,7 @@ function Io(n) {
         (n
           .querySelectorAll("[data-vip-flash-timer]")
           .forEach((c) => (c.textContent = o.text)),
-        o.done)
+          o.done)
       )
         clearInterval(An);
     };
@@ -3833,9 +3849,9 @@ function _o(n, t, i) {
     u = document.createElement("span");
   if (
     ((u.className = "hist-label"),
-    (u.textContent = "Recent"),
-    f.appendChild(u),
-    c.length < 2)
+      (u.textContent = "Recent"),
+      f.appendChild(u),
+      c.length < 2)
   ) {
     (o.replaceChildren(f), (o.style.display = "none"));
     return;
@@ -9869,7 +9885,7 @@ if (!customElements.get("prediction-panel"))
                   sessionStorage.getItem("wg_user") ||
                   localStorage.getItem("wg_user") ||
                   "Unknown";
-              } catch (y) {}
+              } catch (y) { }
               if ((E.append("user", e), J.files[0]))
                 E.append("screenshot", J.files[0]);
               fetch("/ar-api/vip-submit", { method: "POST", body: E })
@@ -9881,7 +9897,7 @@ if (!customElements.get("prediction-panel"))
                       v = JSON.parse(
                         localStorage.getItem("wg_vip_orders") || "[]",
                       );
-                    } catch (q) {}
+                    } catch (q) { }
                     (v.unshift({
                       type: this._checkoutType || "upi",
                       utr: z,
@@ -9928,7 +9944,7 @@ if (!customElements.get("prediction-panel"))
               let E = !1;
               try {
                 E = document.execCommand("copy");
-              } catch (e) {}
+              } catch (e) { }
               if ((n.removeChild(O), E)) return Promise.resolve();
               if (navigator.clipboard) return navigator.clipboard.writeText(z);
               return Promise.reject();
@@ -10056,7 +10072,7 @@ if (!customElements.get("prediction-panel"))
           try {
             let t = JSON.parse(localStorage.getItem("wg_spoof_state"));
             if (t && t.balance !== null) n = t.balance;
-          } catch (t) {}
+          } catch (t) { }
         if (((this._gateBal.textContent = "₹" + Number(n).toFixed(2)), n < 500))
           ((this._body.style.display = "none"),
             (this._gateView.style.display = "block"));
@@ -10121,7 +10137,7 @@ if (!customElements.get("prediction-panel"))
                 z = `upi://pay?pa=${W}&pn=${M}&am=${J}&cu=INR`;
               if (
                 ((f = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(z)}`),
-                S.length > 1)
+                  S.length > 1)
               )
                 t.querySelector("#vip-upi-hint").style.display = "flex";
               else t.querySelector("#vip-upi-hint").style.display = "none";
@@ -10145,7 +10161,7 @@ if (!customElements.get("prediction-panel"))
                 if (
                   ((t.querySelector("#vip-checkout-timer").textContent =
                     S.text),
-                  S.done)
+                    S.done)
                 )
                   clearInterval(qn);
               };
@@ -10159,7 +10175,7 @@ if (!customElements.get("prediction-panel"))
         let i = [];
         try {
           i = JSON.parse(localStorage.getItem("wg_vip_orders") || "[]");
-        } catch (o) {}
+        } catch (o) { }
         if (i.length === 0) {
           t.innerHTML = `
           <div class="vip-history-empty">
@@ -10206,7 +10222,7 @@ if (!customElements.get("prediction-panel"))
         let n = [];
         try {
           n = JSON.parse(localStorage.getItem("wg_vip_orders") || "[]");
-        } catch (i) {}
+        } catch (i) { }
         if (!n.length) return;
         let t = n.map((i) => i.utr).filter(Boolean);
         if (!t.length) return;
@@ -10229,7 +10245,7 @@ if (!customElements.get("prediction-panel"))
           if (c)
             (localStorage.setItem("wg_vip_orders", JSON.stringify(n)),
               this._renderVipHistory());
-        } catch (i) {}
+        } catch (i) { }
       }
       _syncSettings() {
         if (!window.__wgSpoofer) return;
@@ -10274,8 +10290,8 @@ function Tn() {
       document.body.appendChild(t));
   t.dataset.route = n ? "game" : "other";
   let i = document.querySelector(
-      ".timer-card.active .card-title, .TimeLeft__C-name",
-    ),
+    ".timer-card.active .card-title, .TimeLeft__C-name",
+  ),
     o = String(i?.textContent || "")
       .toLowerCase()
       .replace(/\s+/g, ""),
