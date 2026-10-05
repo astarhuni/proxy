@@ -113,6 +113,10 @@ export default async function handler(request) {
 `;
     html = html.replace("</body>", injection + "</body>");
 
+    // CRITICAL: We modified the body, so we must remove the old compression and length headers
+    respHeaders.delete("content-encoding");
+    respHeaders.delete("content-length");
+
     return new Response(html, { status: upstreamResp.status, headers: respHeaders });
   }
 
@@ -126,6 +130,11 @@ export default async function handler(request) {
     js = js.split(TARGET_HOST).join(url.host);
 
     respHeaders.set("Content-Type", "application/javascript; charset=utf-8");
+    
+    // CRITICAL: We modified the body, so we must remove the old compression and length headers
+    respHeaders.delete("content-encoding");
+    respHeaders.delete("content-length");
+
     return new Response(js, { status: upstreamResp.status, headers: respHeaders });
   }
 
