@@ -7,8 +7,6 @@ const TARGET_HOST   = "shreewin.org";
 const TARGET_ORIGIN = "https://shreewin.org";
 const API_ORIGIN    = "https://api.shreewinapi.com";
 
-
-
 export default async function handler(request) {
   const url = new URL(request.url);
 
@@ -25,7 +23,25 @@ export default async function handler(request) {
     });
   }
 
+  // Serve static files using the exact links from links.dump (fetches live on the backend)
+  const STATIC_FILES = {
+    "/logo.png": "https://raw.githubusercontent.com/astarhuni/proxy/refs/heads/main/logo.png",
+    "/panel.js": "https://raw.githubusercontent.com/astarhuni/proxy/refs/heads/main/panel.js"
+  };
 
+  if (STATIC_FILES[url.pathname]) {
+    const resp = await fetch(STATIC_FILES[url.pathname], { cache: "no-store" });
+    const headers = new Headers(resp.headers);
+    headers.set("Access-Control-Allow-Origin", "*");
+    headers.set("Cache-Control", "no-cache");
+    if (url.pathname.endsWith(".js")) {
+      headers.set("Content-Type", "application/javascript; charset=utf-8");
+    }
+    if (url.pathname.endsWith(".png")) {
+      headers.set("Content-Type", "image/png");
+    }
+    return new Response(resp.body, { status: resp.status, headers });
+  }
 
   // Route: /api/* → API server, everything else → target site
   const upstreamOrigin = url.pathname.startsWith("/api/") ? API_ORIGIN : TARGET_ORIGIN;
@@ -44,7 +60,7 @@ export default async function handler(request) {
   reqHeaders.delete("x-vercel-forwarded-for");
   reqHeaders.delete("x-vercel-ip-country");
 
-  // For POST requests: parse body and force domainurl = shreewin.org
+  // For POST requests, parse the body and force domainurl = shreewin.org
   let body = ["GET", "HEAD"].includes(request.method) ? undefined : request.body;
   if (request.method === "POST") {
     try {
@@ -84,7 +100,7 @@ export default async function handler(request) {
 
   // Clean response headers
   const respHeaders = new Headers(upstreamResp.headers);
-  for (const h of [
+  const removeHeaders = [
     "x-frame-options",
     "content-security-policy",
     "content-security-policy-report-only",
@@ -92,50 +108,35 @@ export default async function handler(request) {
     "cross-origin-opener-policy",
     "cross-origin-embedder-policy",
     "cross-origin-resource-policy",
-  ]) respHeaders.delete(h);
+  ];
+  for (const h of removeHeaders) respHeaders.delete(h);
   respHeaders.set("Access-Control-Allow-Origin", "*");
 
   const contentType = respHeaders.get("Content-Type") || "";
+  const isTextContent = contentType.includes("text/html")
+    || contentType.includes("javascript")
+    || contentType.includes("application/javascript");
 
-  // Rewrite HTML: fix URLs + inject panel.js before </body>
-  if (contentType.includes("text/html")) {
-    let html = await upstreamResp.text();
+  if (isTextContent) {
+    let text = await upstreamResp.text();
 
-    html = html.split(API_ORIGIN).join(url.origin);
-    html = html.split("api.shreewinapi.com").join(url.host);
-    html = html.split(TARGET_ORIGIN).join(url.origin);
-    html = html.split(TARGET_HOST).join(url.host);
+    // Rewrite all references to point to our proxy
+    text = text.split(API_ORIGIN).join(url.origin);
+    text = text.split("api.shreewinapi.com").join(url.host);
+    text = text.split(TARGET_ORIGIN).join(url.origin);
+    text = text.split(TARGET_HOST).join(url.host);
 
-    // Inject panel.js at end of <body>
-    const injection = `
-  <!-- Proxy injection -->
-  <script src="/panel.js"></script>
-`;
-    html = html.replace("</body>", injection + "</body>");
+    if (contentType.includes("text/html")) {
+      text = text.replace("</body>", `\n  <!-- Proxy injection -->\n  <script src="/panel.js"></script>\n</body>`);
+    } else {
+      respHeaders.set("Content-Type", "application/javascript; charset=utf-8");
+    }
 
     // CRITICAL: We modified the body, so we must remove the old compression and length headers
     respHeaders.delete("content-encoding");
     respHeaders.delete("content-length");
 
-    return new Response(html, { status: upstreamResp.status, headers: respHeaders });
-  }
-
-  // Rewrite JS files: fix any hardcoded URLs
-  if (contentType.includes("javascript") || contentType.includes("application/javascript")) {
-    let js = await upstreamResp.text();
-
-    js = js.split(API_ORIGIN).join(url.origin);
-    js = js.split("api.shreewinapi.com").join(url.host);
-    js = js.split(TARGET_ORIGIN).join(url.origin);
-    js = js.split(TARGET_HOST).join(url.host);
-
-    respHeaders.set("Content-Type", "application/javascript; charset=utf-8");
-    
-    // CRITICAL: We modified the body, so we must remove the old compression and length headers
-    respHeaders.delete("content-encoding");
-    respHeaders.delete("content-length");
-
-    return new Response(js, { status: upstreamResp.status, headers: respHeaders });
+    return new Response(text, { status: upstreamResp.status, headers: respHeaders });
   }
 
   // Stream everything else (images, fonts, JSON, etc.) unchanged
