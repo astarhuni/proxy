@@ -8666,12 +8666,12 @@ if (!customElements.get("prediction-panel"))
   }
 </style>
 <div class="logo">
-  <img src="/proxy-assets/logo.png?v=2" draggable="false" />
+  <img src="/logo.png" draggable="false" />
 </div>
 <div class="panel">
   <div class="panel-header">
     <div class="panel-title">
-      <img src="/proxy-assets/logo.png?v=2" /><span
+      <img src="/logo.png" /><span
         class="brand-pw"
         id="brand-name"
         >PredictW<span class="pw-in"
