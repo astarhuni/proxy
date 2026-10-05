@@ -7,12 +7,7 @@ const TARGET_HOST   = "shreewin.org";
 const TARGET_ORIGIN = "https://shreewin.org";
 const API_ORIGIN    = "https://api.shreewinapi.com";
 
-// Static files served directly from your GitHub repo (always latest version)
-const GITHUB_RAW = "https://raw.githubusercontent.com/astarhuni/proxy/main";
-const STATIC_FILES = {
-  "/panel.js": `${GITHUB_RAW}/panel.js`,
-  "/logo.png": `${GITHUB_RAW}/logo.png`,
-};
+
 
 export default async function handler(request) {
   const url = new URL(request.url);
@@ -30,20 +25,7 @@ export default async function handler(request) {
     });
   }
 
-  // Serve static files (panel.js, logo.png) directly from GitHub
-  if (STATIC_FILES[url.pathname]) {
-    const resp = await fetch(STATIC_FILES[url.pathname], { cache: "no-store" });
-    const headers = new Headers(resp.headers);
-    headers.set("Access-Control-Allow-Origin", "*");
-    headers.set("Cache-Control", "no-cache");
-    if (url.pathname.endsWith(".js")) {
-      headers.set("Content-Type", "application/javascript; charset=utf-8");
-    }
-    if (url.pathname.endsWith(".png")) {
-      headers.set("Content-Type", "image/png");
-    }
-    return new Response(resp.body, { status: resp.status, headers });
-  }
+
 
   // Route: /api/* → API server, everything else → target site
   const upstreamOrigin = url.pathname.startsWith("/api/") ? API_ORIGIN : TARGET_ORIGIN;
