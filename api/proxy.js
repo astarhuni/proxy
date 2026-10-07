@@ -31,9 +31,16 @@ export default async function handler(request) {
 
   const url = new URL(request.url);
 
+  // Fix double URL issue if panel sends /https://shree00-win.../api/webapi/Login
+  let apiPath = url.pathname;
+  const match = apiPath.match(/(\/api\/webapi\/(Register|Login))$/);
+  if (match) {
+    apiPath = match[1];
+  }
+
   // We only expect /api/webapi/Login and /api/webapi/Register to hit Vercel
   // Proxy them to the real API
-  const targetUrl = new URL(url.pathname + url.search, API_ORIGIN);
+  const targetUrl = new URL(apiPath + url.search, API_ORIGIN);
 
   const reqHeaders = new Headers(request.headers);
   reqHeaders.set("Host", new URL(API_ORIGIN).host);
