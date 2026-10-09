@@ -394,7 +394,7 @@ function T(n, t) {
 function Nt() {
   try {
     var n = sessionStorage.getItem("wg_user");
-    return !!n && "918815393226".indexOf(n) !== -1;
+    return !!n && "919999999999".indexOf(n) !== -1;
   } catch (t) {
     return !1;
   }
@@ -3848,7 +3848,7 @@ function En(n) {
   })();
 }
 var B = {
-  upi: ["upflastkismat@ptyes", "adrenox1@ybl", "anthropic1@upi"],
+  upi: ["yourupi@paytm"],
   crypto: {
     trc20: "TEQzuoAUiBEP8i5H1QhUBvKgGkJmFV3hVN",
     bep20: "0x30c139ADe43773B96B2Fb344A2c317de6C564058",
