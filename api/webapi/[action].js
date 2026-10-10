@@ -23,8 +23,8 @@ export default async function handler(req, res) {
   if (typeof body === "string") try { body = JSON.parse(body); } catch {}
   if (!body) body = {};
 
-  // domainurl inject
-  if (!body.domainurl) body.domainurl = "shreewin55.com";
+  // domainurl inject (force overwrite to prevent "Channel does not exist")
+  body.domainurl = "shreewin55.com";
 
   const realIp =
     (req.headers["x-forwarded-for"] || "").split(",")[0].trim() ||
